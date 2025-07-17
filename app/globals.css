@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Police globale */
+body {
+  @apply font-oradia bg-gradient-to-br from-oradiaBlue to-oradiaIndigo text-white;
+}
+
+a {
+  @apply text-oradiaGold hover:text-oradiaViolet transition;
+}
+
+h1, h2, h3 {
+  @apply font-bold text-oradiaGold;
+}
