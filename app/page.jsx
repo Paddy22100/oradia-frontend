@@ -1,30 +1,43 @@
 ﻿"use client";
+
 import React, { useEffect } from "react";
 import "./globals.css";
 
 export default function Home() {
   useEffect(() => {
-    // Scroll to top button
     const scrollTopBtn = document.getElementById("scrollTop");
+    if (scrollTopBtn) {
+      const handleScroll = () => {
+        if (window.pageYOffset > 300) {
+          scrollTopBtn.classList.add("show");
+        } else {
+          scrollTopBtn.classList.remove("show");
+        }
+      };
 
-    window.addEventListener("scroll", () => {
-      if (window.pageYOffset > 300) {
-        scrollTopBtn.classList.add("show");
-      } else {
-        scrollTopBtn.classList.remove("show");
-      }
-    });
+      const handleClick = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
 
-    scrollTopBtn.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
+if (window) {       window.addEventListener("scroll", handleScroll); }
+if (scrollTopBtn) {       scrollTopBtn.addEventListener("click", handleClick); }
 
-    // ... (le reste des scripts ici)
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+        scrollTopBtn.removeEventListener("click", handleClick);
+      };
+    }
   }, []);
 
   return (
     <div className="relative">
-      {/* CONTENU JSX adapté du body */}
+      <button
+        id="scrollTop"
+        className="hidden fixed bottom-5 right-5 bg-blue-500 text-white p-2 rounded"
+      >
+        ↑ Haut
+      </button>
+      {/* CONTENU */}
     </div>
   );
 }

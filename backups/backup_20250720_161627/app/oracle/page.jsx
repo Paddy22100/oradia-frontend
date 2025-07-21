@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useState } from "react";
 import Image from "next/image";
 
@@ -42,7 +42,7 @@ export default function Oracle() {
           disabled={loading}
           className="px-6 py-3 rounded-lg border border-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0A0F2C] transition font-bold mt-6"
         >
-          {loading ? "Tirage en cours..." : "🎴 Commencer le tirage"}
+          {loading ? "Tirage en cours..." : "ðŸŽ´ Commencer le tirage"}
         </button>
       )}
 
@@ -77,7 +77,7 @@ export default function Oracle() {
           onClick={handleTirage}
           className="px-6 py-3 rounded-lg border border-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0A0F2C] transition font-bold mt-8"
         >
-          🔄 Refaire un tirage
+          ðŸ”„ Refaire un tirage
         </button>
       )}
     </main>

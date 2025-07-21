@@ -1,17 +1,17 @@
-export async function GET() {
+﻿export async function GET() {
   const familles = {
-    "Émotions": ["Joie", "Tristesse", "Colère", "Peur", "Sérénité"],
-    "Besoins": ["Sécurité", "Amour", "Reconnaissance", "Liberté", "Clarté"],
-    "Transmutation": ["Lâcher-Prise", "Transformation", "Résilience", "Guérison", "Élévation"],
-    "Archétypes": ["Sage", "Guerrier", "Amant", "Créateur", "Alchimiste"],
-    "Révélations": ["Prendre Conscience", "Illumination", "Ouverture", "Vision", "Éveil"],
+    "Ã‰motions": ["Joie", "Tristesse", "ColÃ¨re", "Peur", "SÃ©rÃ©nitÃ©"],
+    "Besoins": ["SÃ©curitÃ©", "Amour", "Reconnaissance", "LibertÃ©", "ClartÃ©"],
+    "Transmutation": ["LÃ¢cher-Prise", "Transformation", "RÃ©silience", "GuÃ©rison", "Ã‰lÃ©vation"],
+    "ArchÃ©types": ["Sage", "Guerrier", "Amant", "CrÃ©ateur", "Alchimiste"],
+    "RÃ©vÃ©lations": ["Prendre Conscience", "Illumination", "Ouverture", "Vision", "Ã‰veil"],
     "Actions": ["Agir", "Exprimer", "Oser", "Ancrer", "Partager"]
   };
 
   const tirage = await Promise.all(
     Object.entries(familles).map(async ([famille, cartes]) => {
       const carte = cartes[Math.floor(Math.random() * cartes.length)];
-      const prompt = `Oracle Oradia – Famille : ${famille}. Carte : "${carte}". Écris une interprétation vibratoire et poétique.`;
+      const prompt = `Oracle Oradia â€“ Famille : ${famille}. Carte : "${carte}". Ã‰cris une interprÃ©tation vibratoire et poÃ©tique.`;
 
       try {
         const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -34,7 +34,7 @@ export async function GET() {
         };
       } catch (err) {
         console.error("Erreur OpenAI :", err);
-        return { famille, carte, interpretation: "Erreur lors de la génération." };
+        return { famille, carte, interpretation: "Erreur lors de la gÃ©nÃ©ration." };
       }
     })
   );

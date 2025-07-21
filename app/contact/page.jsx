@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -21,7 +21,7 @@ export default function Contact() {
         href="/"
         className="px-6 py-3 rounded-lg border border-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0A0F2C] transition font-bold"
       >
-        Retour à l'accueil
+        Retour Ã  l'accueil
       </Link>
     </main>
   );

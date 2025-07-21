@@ -1,6 +1,6 @@
-// oradia-frontend/lib/api.js
+﻿// oradia-frontend/lib/api.js
 
-// ✅ Supprime le slash final éventuel dans l’URL backend
+// âœ… Supprime le slash final Ã©ventuel dans lâ€™URL backend
 const API_URL = process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "");
 
 export async function generatePage(prompt) {
@@ -18,7 +18,7 @@ export async function generatePage(prompt) {
     }
 
     const data = await response.json();
-    return data.message || "✅ Page générée avec succès.";
+    return data.message || "âœ… Page gÃ©nÃ©rÃ©e avec succÃ¨s.";
   } catch (error) {
     console.error("Erreur API :", error);
     throw error;

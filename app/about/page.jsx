@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,15 +13,15 @@ export default function About() {
           height={150}
         />
       </header>
-      <h1 className="text-4xl font-bold mb-4">À propos d'Oradia</h1>
+      <h1 className="text-4xl font-bold mb-4">Ã€ propos d'Oradia</h1>
       <p className="mb-6 max-w-2xl">
-        Oradia estt un espace dédié à la guidance vibratoire et à l’éveil intérieur. Notre vision est de reconnecter chaque être à sa pulsation originelle et à l’harmonie du Vivant.
+        Oradia estt un espace dÃ©diÃ© Ã  la guidance vibratoire et Ã  lâ€™Ã©veil intÃ©rieur. Notre vision est de reconnecter chaque Ãªtre Ã  sa pulsation originelle et Ã  lâ€™harmonie du Vivant.
       </p>
       <Link
         href="/"
         className="px-6 py-3 rounded-lg border border-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0A0F2C] transition font-bold"
       >
-        Retour à l'accueil
+        Retour Ã  l'accueil
       </Link>
     </main>
   );
