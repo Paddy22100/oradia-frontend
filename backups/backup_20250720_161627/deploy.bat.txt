@@ -1,0 +1,54 @@
+@echo off
+echo 🔄 Déploiement Oradia en cours...
+
+REM 📂 Vérifier si on est dans un dépôt Git
+git rev-parse --is-inside-work-tree >nul 2>&1
+if errorlevel 1 (
+    echo ❌ Ce dossier n'est pas un dépôt Git. Abandon...
+    pause
+    exit /b
+)
+
+REM 📌 Récupère la branche courante
+for /f %%b in ('git branch --show-current') do set currentBranch=%%b
+echo 📌 Branche courante : %currentBranch%
+
+REM 🚨 Si pas sur main, on bascule et merge
+if NOT "%currentBranch%"=="main" (
+    echo 🔄 Changement vers la branche main...
+    git checkout main
+
+    echo 🔀 Fusion des changements depuis %currentBranch% dans main...
+    git merge %currentBranch%
+)
+
+REM ✅ Ajoute tous les fichiers (y compris supprimés et non trackés)
+git add -A
+
+REM ✅ Vérifie s’il y a des changements à commit
+git diff --cached --quiet
+if %errorlevel% equ 0 (
+    echo ⚠️ Aucun changement détecté à committer.
+) else (
+    echo 📝 Commit des changements...
+    git commit -m "🔄 Déploiement Oradia auto"
+)
+
+REM 🌱 Vérifie si l’upstream est configuré
+git rev-parse --abbrev-ref --symbolic-full-name @{u} >nul 2>&1
+if errorlevel 1 (
+    echo 🌱 Aucun upstream configuré. Création de l’upstream...
+    git push -u origin main
+) else (
+    REM 🚀 Push sur la branche distante
+    echo 🚀 Push des modifications sur GitHub...
+    git push origin main
+)
+
+REM 🔄 Déclenche un rebuild Vercel même sans changement
+echo 🔄 Déclenche un rebuild Vercel...
+git commit --allow-empty -m "🔄 Rebuild Vercel"
+git push origin main
+
+echo ✅ Déploiement terminé. Vérifie sur https://oradia.fr
+pause

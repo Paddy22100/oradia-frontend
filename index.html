@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oradia - Oracle Vibratoire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'night-blue': '#0a192f',
+                        'gold': '#d4af37',
+                        'light-gold': '#f5e7a1',
+                        'dark-blue': '#051428',
+                        'celtic-blue': '#1a365d'
+                    },
+                    fontFamily: {
+                        'cormorant': ['Cormorant Garamond', 'serif'],
+                        'poppins': ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0a192f;
+            color: #f5e7a1;
+            overflow-x: hidden;
+        }
+        
+        .cormorant {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        .header-bg {
+            background: linear-gradient(rgba(10, 25, 47, 0.9), rgba(5, 20, 40, 0.9)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M20,50 Q40,30 50,50 T80,50" fill="none" stroke="%23d4af37" stroke-width="0.5" opacity="0.2"/></svg>');
+            background-size: cover;
+        }
+        
+        .hero-bg {
+            background: radial-gradient(circle at center, rgba(26, 54, 93, 0.7) 0%, rgba(5, 20, 40, 0.9) 70%), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="none" stroke="%23d4af37" stroke-width="1" opacity="0.1"/></svg>');
+            background-size: cover;
+        }
+        
+        .card-bg {
+            background: linear-gradient(145deg, rgba(26, 54, 93, 0.8), rgba(5, 20, 40, 0.9));
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .card-bg:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.2);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+        
+        .oracle-card {
+            width: 120px;
+            height: 180px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        
+        .oracle-card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-front {
+            background: linear-gradient(135deg, #1a365d, #0a192f);
+            border: 2px solid #d4af37;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .card-back {
+            background: linear-gradient(135deg, #0a192f, #1a365d);
+            transform: rotateY(180deg);
+            border: 2px solid #f5e7a1;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        .card-symbol {
+            font-size: 2.5rem;
+            color: #d4af37;
+        }
+        
+        .card-result {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .gold-gradient {
+            background: linear-gradient(90deg, #d4af37, #f5e7a1, #d4af37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 300% 300%;
+            animation: gradient-shift 4s ease infinite;
+        }
+        
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .spiral-bg {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><path d="M100,20 C150,20 180,50 180,100 C180,150 150,180 100,180 C50,180 20,150 20,100 C20,50 50,20 100,20 Z" fill="none" stroke="%23d4af37" stroke-width="0.5" opacity="0.1"/></svg>');
+            background-size: 200px 200px;
+        }
+        
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .scroll-top.show {
+            opacity: 1;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+        }
+        
+        .sidebar {
+            background: linear-gradient(145deg, #051428, #0a192f);
+            border-right: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .chart-container {
+            background: rgba(5, 20, 40, 0.7);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 10px;
+            height: 300px;
+            position: relative;
+        }
+        
+        .chart-bar {
+            position: absolute;
+            bottom: 0;
+            width: 30px;
+            background: linear-gradient(to top, #d4af37, #f5e7a1);
+            border-radius: 4px 4px 0 0;
+            transition: height 0.5s ease;
+        }
+        
+        .stat-card {
+            background: rgba(5, 20, 40, 0.7);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+        
+        .testimonial-card {
+            background: linear-gradient(145deg, rgba(26, 54, 93, 0.7), rgba(5, 20, 40, 0.9));
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+        }
+        
+        .form-input {
+            background: rgba(5, 20, 40, 0.7);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: #f5e7a1;
+            border-radius: 8px;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        }
+        
+        .btn-gold {
+            background: linear-gradient(135deg, #d4af37, #b8860b);
+            color: #051428;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 12px 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-gold:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        }
+        
+        .btn-outline-gold {
+            background: transparent;
+            color: #d4af37;
+            border: 2px solid #d4af37;
+            border-radius: 8px;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-gold:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .tab-active {
+            border-bottom: 3px solid #d4af37;
+            color: #f5e7a1;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #d4af37;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(212, 175, 55, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            }
+            
+            .card-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body class="relative">
+    <!-- Scroll to top button -->
+    <button id="scrollTop" class="scroll-top bg-night-blue text-gold p-3 rounded-full border border-gold shadow-lg">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Header -->
+    <header class="header-bg fixed w-full z-50 py-4 px-6 flex justify-between items-center">
+        <div class="flex items-center">
+            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16 mr-4" />
+            <span class="cormorant text-3xl font-bold gold-gradient">ORADIA</span>
+        </div>
+        
+        <nav class="hidden md:flex space-x-8">
+            <a href="#accueil" class="nav-link relative text-light-gold hover:text-gold transition">Accueil</a>
+            <a href="#oracle" class="nav-link relative text-light-gold hover:text-gold transition">Oracle</a>
+            <a href="#offres" class="nav-link relative text-light-gold hover:text-gold transition">Offres</a>
+            <a href="#apropos" class="nav-link relative text-light-gold hover:text-gold transition">À Propos</a>
+            <a href="#edolgor" class="nav-link relative text-light-gold hover:text-gold transition">Edolg'Or</a>
+            <a href="#temoignages" class="nav-link relative text-light-gold hover:text-gold transition">Témoignages</a>
+        </nav>
+        
+        <div class="flex items-center space-x-4">
+            <button id="loginBtn" class="btn-outline-gold">Connexion</button>
+            <button class="md:hidden text-gold text-2xl">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="accueil" class="hero-bg min-h-screen flex items-center pt-20 pb-32 px-6">
+        <div class="container mx-auto max-w-6xl">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="text-center lg:text-left fade-in">
+                    <h1 class="cormorant text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
+                        <span class="block gold-gradient">Découvrez Votre</span>
+                        <span class="block mt-2">Chemin Vibratoire</span>
+                    </h1>
+                    <p class="text-xl text-light-gold mb-8 max-w-2xl">
+                        L'oracle Oradia croise les sagesses ancestrales et les outils modernes de connaissance de soi pour vous guider sur votre chemin personnel.
+                    </p>
+                    <div class="flex flex-wrap justify-center lg:justify-start gap-4">
+                        <a href="#oracle" class="btn-gold">Tirer les cartes</a>
+                        <a href="#offres" class="btn-outline-gold">Découvrir les offres</a>
+                    </div>
+                </div>
+                
+                <div class="flex justify-center">
+                    <div class="relative w-80 h-80 lg:w-96 lg:h-96">
+                        <div class="absolute inset-0 bg-gradient-to-br from-night-blue to-dark-blue rounded-full shadow-2xl flex items-center justify-center floating">
+                            <div class="bg-gradient-to-br from-gold to-light-gold w-64 h-64 rounded-full flex items-center justify-center pulse">
+                                <div class="bg-night-blue w-56 h-56 rounded-full flex items-center justify-center">
+                                    <div class="text-center">
+                                        <div class="text-5xl text-gold mb-3">
+                                            <i class="fas fa-seedling"></i>
+                                        </div>
+                                        <span class="cormorant text-2xl text-gold">Oradia</span>
+                                        <p class="text-light-gold mt-2">Oracle Vibratoire</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="absolute -top-6 -left-6 w-32 h-32 rounded-full border-4 border-gold opacity-30"></div>
+                        <div class="absolute -bottom-6 -right-6 w-32 h-32 rounded-full border-4 border-gold opacity-30"></div>
+                        <div class="absolute -top-10 right-10 w-20 h-20 rounded-full border-2 border-gold opacity-20"></div>
+                        <div class="absolute bottom-10 -left-10 w-20 h-20 rounded-full border-2 border-gold opacity-20"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Oracle Drawing Section -->
+    <section id="oracle" class="py-20 px-6 spiral-bg">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16">
+                <h2 class="cormorant text-4xl md:text-5xl font-bold mb-4 gold-gradient">Tirage Oracle Oradia</h2>
+                <p class="text-light-gold max-w-3xl mx-auto">
+                    Croisement unique entre Yi Jing, Human Design, Ennéagramme, Astrologie et autres systèmes de connaissance de soi pour une guidance vibratoire.
+                </p>
+            </div>
+            
+            <!-- Form Section -->
+            <div class="card-bg rounded-2xl p-8 mb-12">
+                <h3 class="cormorant text-2xl text-gold mb-6">Vos informations pour le tirage</h3>
+                <form id="oracleForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-light-gold mb-2">Nom complet</label>
+                        <input type="text" class="form-input w-full" placeholder="Votre nom" required>
+                    </div>
+                    <div>
+                        <label class="block text-light-gold mb-2">Date de naissance</label>
+                        <input type="date" class="form-input w-full" required>
+                    </div>
+                    <div>
+                        <label class="block text-light-gold mb-2">Heure de naissance</label>
+                        <input type="time" class="form-input w-full" required>
+                    </div>
+                    <div>
+                        <label class="block text-light-gold mb-2">Lieu de naissance</label>
+                        <input type="text" class="form-input w-full" placeholder="Ville, Pays" required>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-light-gold mb-2">Intention du tirage</label>
+                        <textarea class="form-input w-full h-32" placeholder="Exprimez votre intention pour ce tirage..." required></textarea>
+                    </div>
+                    <div class="md:col-span-2 text-center mt-4">
+                        <button type="submit" class="btn-gold">Commencer le tirage</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Card Selection -->
+            <div id="cardSelection" class="hidden">
+                <h3 class="cormorant text-2xl text-gold mb-8 text-center">Choisissez une famille de cartes</h3>
+                
+                <div class="flex flex-wrap justify-center gap-8 mb-16">
+                    <div class="oracle-card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="text-center">
+                                    <div class="text-gold text-4xl mb-2">
+                                        <i class="fas fa-heart"></i>
+                                    </div>
+                                    <span class="text-light-gold">Émotions</span>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <div class="text-center p-4">
+                                    <div class="text-light-gold text-5xl mb-2">🌊</div>
+                                    <span class="text-gold font-bold">Émotions</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="oracle-card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="text-center">
+                                    <div class="text-gold text-4xl mb-2">
+                                        <i class="fas fa-hands-helping"></i>
+                                    </div>
+                                    <span class="text-light-gold">Besoins</span>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <div class="text-center p-4">
+                                    <div class="text-light-gold text-5xl mb-2">🕊️</div>
+                                    <span class="text-gold font-bold">Besoins</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="oracle-card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="text-center">
+                                    <div class="text-gold text-4xl mb-2">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </div>
+                                    <span class="text-light-gold">Transmutation</span>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <div class="text-center p-4">
+                                    <div class="text-light-gold text-5xl mb-2">♻️</div>
+                                    <span class="text-gold font-bold">Transmutation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="oracle-card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="text-center">
+                                    <div class="text-gold text-4xl mb-2">
+                                        <i class="fas fa-walking"></i>
+                                    </div>
+                                    <span class="text-light-gold">Actions</span>
+                                </div>
+                            </div>
+                            <div class="card-back">
+                                <div class="text-center p-4">
+                                    <div class="text-light-gold text-5xl mb-2">⚡</div>
+                                    <span class="text-gold font-bold">Actions</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Results Section -->
+                <div id="resultsSection" class="hidden">
+                    <h3 class="cormorant text-2xl text-gold mb-8 text-center">Votre tirage du jour</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                        <div class="card-bg rounded-xl p-6 card-result">
+                            <div class="text-center mb-4">
+                                <div class="text-5xl text-gold mb-3">🌊</div>
+                                <h4 class="cormorant text-xl text-gold mb-2">Émotions</h4>
+                            </div>
+                            <p class="text-light-gold text-center">Acceptez le flux de vos émotions sans résistance, elles sont le langage de votre âme.</p>
+                        </div>
+                        
+                        <div class="card-bg rounded-xl p-6 card-result">
+                            <div class="text-center mb-4">
+                                <div class="text-5xl text-gold mb-3">🕊️</div>
+                                <h4 class="cormorant text-xl text-gold mb-2">Besoins</h4>
+                            </div>
+                            <p class="text-light-gold text-center">Votre besoin de sécurité intérieure est appelé à être nourri par la confiance en l'univers.</p>
+                        </div>
+                        
+                        <div class="card-bg rounded-xl p-6 card-result">
+                            <div class="text-center mb-4">
+                                <div class="text-5xl text-gold mb-3">♻️</div>
+                                <h4 class="cormorant text-xl text-gold mb-2">Transmutation</h4>
+                            </div>
+                            <p class="text-light-gold text-center">Transformez vos doutes en certitudes par l'alchimie de votre volonté créatrice.</p>
+                        </div>
+                        
+                        <div class="card-bg rounded-xl p-6 card-result">
+                            <div class="text-center mb-4">
+                                <div class="text-5xl text-gold mb-3">⚡</div>
+                                <h4 class="cormorant text-xl text-gold mb-2">Actions</h4>
+                            </div>
+                            <p class="text-light-gold text-center">Posez un acte symbolique qui représente votre engagement envers votre croissance.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Mutant Card -->
+                    <div class="card-bg rounded-xl p-6 max-w-2xl mx-auto mb-8">
+                        <div class="text-center mb-4">
+                            <div class="text-5xl text-gold mb-3">✨</div>
+                            <h4 class="cormorant text-xl text-gold mb-2">Carte Mutante</h4>
+                        </div>
+                        <p class="text-light-gold text-center italic">
+                            "La transformation que vous traversez est une métamorphose nécessaire. Comme le papillon émerge de sa chrysalide, votre être essentiel se révèle dans sa pleine lumière."
+                        </p>
+                    </div>
+                    
+                    <!-- Final Synthesis -->
+                    <div class="text-center">
+                        <h4 class="cormorant text-2xl text-gold mb-4">Synthèse Vibratoire</h4>
+                        <p class="text-xl text-light-gold max-w-3xl mx-auto mb-8">
+                            Votre chemin actuel vous invite à embrasser la fluidité de l'existence. En alignant vos émotions avec vos actions authentiques, vous créez une harmonie qui résonne avec votre essence profonde.
+                        </p>
+                        
+                        <div class="bg-gradient-to-r from-transparent via-gold/20 to-transparent h-px w-3/4 mx-auto my-8"></div>
+                        
+                        <h4 class="cormorant text-2xl text-gold mb-4">Mantra du Jour</h4>
+                        <p class="text-2xl text-light-gold italic mb-8">
+                            "Je suis le créateur conscient de ma réalité, aligné avec la sagesse universelle."
+                        </p>
+                        
+                        <h4 class="cormorant text-2xl text-gold mb-4">Question d'Introspection</h4>
+                        <p class="text-xl text-light-gold max-w-3xl mx-auto mb-8">
+                            Quelle action puis-je poser aujourd'hui qui honore à la fois mes besoins profonds et ma contribution au monde ?
+                        </p>
+                        
+                        <button class="btn-gold mt-6">Accéder au tirage complet (5€)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="offres" class="py-20 px-6 bg-dark-blue">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16">
+                <h2 class="cormorant text-4xl md:text-5xl font-bold mb-4 gold-gradient">Nos Offres & Tarifs</h2>
+                <p class="text-light-gold max-w-3xl mx-auto">
+                    Choisissez l'offre qui résonne avec votre cheminement actuel et bénéficiez de l'accompagnement vibratoire d'Oradia.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Free Reading -->
+                <div class="card-bg rounded-2xl p-8 flex flex-col">
+                    <div class="text-center mb-6">
+                        <h3 class="cormorant text-2xl text-gold mb-2">Tirage Simple</h3>
+                        <div class="text-4xl font-bold text-light-gold">Gratuit</div>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-gold mt-1 mr-3"></i>
+                            <span class="text-light-gold">4 cartes vibratoires</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-gold mt-1 mr-3"></i>
+                            <span class="text-light-gold">Interprétation synthétique</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-gold mt-1 mr-3"></i>
+                            <span class="text-light-gold">Analyse croisée basique</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-times-circle text-gray-500 mt-1 mr-3"></i>
+                            <span class="text-gray-500">Cartes mutantes</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-times-circle text-gray-500 mt-1 mr-3"></i>
+                            <span class="text-gray-500">Analyse approfondie</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="#oracle" class="btn-outline-gold text-center">Commencer</a>
+                </div>
+                
+                <!-- Complete Reading -->
+                <div class="card-bg rounded-2xl p-8 flex flex-col border-2 border-gold relative">
+                    <div class="absolute top-0 right-0 bg-gold text-night-blue px-4 py-1 rounded-bl-lg rounded-tr-2xl font-bold">
+                        Populaire
+                    </div>
+                    
+                    <div class="text-center mb-6">
+                        <h3 class="cormorant text-2xl text-gold mb-2">Tirage Complet</h3>
+                        <div class="text-4xl font-bold text-light-gold">5€</div>
+                        <div class="text-light-gold">par tirage</div>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-gold mt-1 mr-3"></i>
+                            <span class="text-light-gold">6 cartes vibratoires</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-gold mt-1 mr-3"></i>
+                            <span class="text-light-gold">Cartes mutantes incluses</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-gold mt-1 mr-3"></i>
+                            <span class="text-light-gold">Analyse complète et détaillée</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-gold mt-1 mr-3"></i>
+                            <span class="text-light-gold">Synthèse vibratoire personnalisée</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-gold mt-1 mr-3"></i>
+                            <span class="text-light-gold">Mantra et question d'introspection</span>
+                        </li>
+                    </ul>
+                    
+                    <button class="btn-gold">Commander</button>
+                </div>
+                
+                <!-- Subscription -->
+                <div class="card-bg rounded-2xl p-8 flex flex-col">
+                    <div class="text-center mb-6">
+                        <h3 class="cormorant text-2xl text-gold mb-2">Abonnement Quotidien</h3>
+                        <div class="text-4xl font-bold text-light-gold">10€<span class="text-lg">/mois</span></div>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-gold mt-1 mr-3"></i>
+                            <span class="text-light-gold">Tirage complet quotidien</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-gold mt-1 mr-3"></i>
+                            <span class="text-light-gold">Cartes mutantes incluses</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-gold mt-1 mr-3"></i>
+                            <span class="text-light-gold">Synthèse vibratoire quotidienne</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-gold mt-1 mr-3"></i>
+                            <span class="text-light-gold">Mantra et question du jour</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-gold mt-1 mr-3"></i>
+                            <span class="text-light-gold">Accès à l'archive des tirages</span>
+                        </li>
+                    </ul>
+                    
+                    <button class="btn-outline-gold">S'abonner</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="apropos" class="py-20 px-6 spiral-bg">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16">
+                <h2 class="cormorant text-4xl md:text-5xl font-bold mb-4 gold-gradient">À Propos d'Oradia</h2>
+                <p class="text-light-gold max-w-3xl mx-auto">
+                    Découvrez l'essence et la mission de notre oracle vibratoire
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="card-bg rounded-2xl p-8 mb-8">
+                        <h3 class="cormorant text-2xl text-gold mb-4">Notre Mission</h3>
+                        <p class="text-light-gold mb-4">
+                            Oradia a pour mission d'aider chacun à trouver sa raison d'être, d'accompagner le pèlerin sur le chemin de sa quête personnelle, et de révéler ses talents uniques.
+                        </p>
+                        <p class="text-light-gold">
+                            Nous œuvrons pour que chaque individu retrouve sa souveraineté et découvre comment utiliser ses dons pour contribuer positivement au Vivant.
+                        </p>
+                    </div>
+                    
+                    <div class="card-bg rounded-2xl p-8">
+                        <h3 class="cormorant text-2xl text-gold mb-4">Notre Approche Éthique</h3>
+                        <p class="text-light-gold mb-4">
+                            Oradia s'engage dans une démarche écologique et respectueuse du Vivant. Notre approche est responsable et consciente de notre impact sur le monde.
+                        </p>
+                        <p class="text-light-gold">
+                            Nous reversons 1% de nos bénéfices à l'association Edolg'Or qui expérimente un modèle de société innovant et respectueux de l'environnement.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex justify-center">
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-gold/10 to-night-blue border border-gold/30 rounded-2xl w-full h-96"></div>
+                        <div class="absolute -bottom-6 -right-6 w-64 h-64 bg-gradient-to-tr from-gold/5 to-transparent border border-gold/20 rounded-2xl"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Edolg'Or Section -->
+    <section id="edolgor" class="py-20 px-6 bg-dark-blue">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16">
+                <h2 class="cormorant text-4xl md:text-5xl font-bold mb-4 gold-gradient">Association Edolg'Or</h2>
+                <p class="text-light-gold max-w-3xl mx-auto">
+                    Découvrez notre engagement pour un modèle de société innovant
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="flex justify-center">
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-gold/10 to-night-blue border border-gold/30 rounded-2xl w-full h-96"></div>
+                        <div class="absolute -top-6 -left-6 w-64 h-64 bg-gradient-to-tr from-gold/5 to-transparent border border-gold/20 rounded-2xl"></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="card-bg rounded-2xl p-8 mb-8">
+                        <h3 class="cormorant text-2xl text-gold mb-4">Le Projet OTRE</h3>
+                        <p class="text-light-gold mb-4">
+                            Edolg'Or expérimente le modèle de société OTRE (Organisation Terrestre de Réalisation Évolutive), une approche innovante pour recréer du lien social et culturel.
+                        </p>
+                        <p class="text-light-gold">
+                            À travers un jeu grandeur nature, les participants découvrent la civilisation d'Edolg'OR et recherchent l'emplacement de sa cité d'or perdue.
+                        </p>
+                    </div>
+                    
+                    <div class="card-bg rounded-2xl p-8">
+                        <h3 class="cormorant text-2xl text-gold mb-4">Notre Contribution</h3>
+                        <p class="text-light-gold mb-4">
+                            Oradia soutient activement Edolg'Or en reversant 1% de ses bénéfices pour favoriser la création, le développement et l'entretien des liens sociaux.
+                        </p>
+                        <p class="text-light-gold">
+                            Les activités ludiques, artistiques et d'arts vivants proposées par l'association créent des espaces d'expression et de reconnexion essentiels.
+                        </p>
+                        
+                        <a href="https://www.helloasso.com/associations/edolgor" target="_blank" class="btn-outline-gold mt-6 inline-block">
+                            Découvrir Edolg'Or
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="temoignages" class="py-20 px-6 spiral-bg">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16">
+                <h2 class="cormorant text-4xl md:text-5xl font-bold mb-4 gold-gradient">Témoignages</h2>
+                <p class="text-light-gold max-w-3xl mx-auto">
+                    Ce que nos pèlerins disent de leur expérience avec Oradia
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="testimonial-card p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16" />
+                        <div class="ml-4">
+                            <h4 class="cormorant text-xl text-gold">Marie L.</h4>
+                            <div class="flex text-gold">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-light-gold italic">
+                        "Le tirage complet m'a apporté des révélations surprenantes qui ont éclairé ma situation professionnelle. La synthèse vibratoire était d'une justesse incroyable."
+                    </p>
+                </div>
+                
+                <div class="testimonial-card p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16" />
+                        <div class="ml-4">
+                            <h4 class="cormorant text-xl text-gold">Thomas D.</h4>
+                            <div class="flex text-gold">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-light-gold italic">
+                        "L'abonnement quotidien est devenu un rituel matinal essentiel. Les mantras et questions d'introspection m'aident à commencer chaque journée avec clarté et intention."
+                    </p>
+                </div>
+                
+                <div class="testimonial-card p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16" />
+                        <div class="ml-4">
+                            <h4 class="cormorant text-xl text-gold">Sophie R.</h4>
+                            <div class="flex text-gold">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-light-gold italic">
+                        "Ce qui distingue Oradia, c'est le croisement des différentes traditions. J'ai retrouvé des éléments de mon Human Design et de mon thème astral dans l'interprétation."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 bg-night-blue border-t border-gold/20">
+        <div class="container mx-auto max-w-6xl">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="bg-gray-200 border-2 border-dashed rounded-xl w-12 h-12" />
+                        <span class="cormorant text-2xl font-bold ml-3 gold-gradient">ORADIA</span>
+                    </div>
+                    <p class="text-light-gold text-sm">
+                        Oracle vibratoire pour accompagner votre cheminement personnel et révéler votre essence.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="cormorant text-xl text-gold mb-4">Navigation</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#accueil" class="text-light-gold hover:text-gold transition">Accueil</a></li>
+                        <li><a href="#oracle" class="text-light-gold hover:text-gold transition">Oracle</a></li>
+                        <li><a href="#offres" class="text-light-gold hover:text-gold transition">Offres</a></li>
+                        <li><a href="#apropos" class="text-light-gold hover:text-gold transition">À Propos</a></li>
+                        <li><a href="#edolgor" class="text-light-gold hover:text-gold transition">Edolg'Or</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="cormorant text-xl text-gold mb-4">Légal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-light-gold hover:text-gold transition">Mentions Légales</a></li>
+                        <li><a href="#" class="text-light-gold hover:text-gold transition">Politique de Confidentialité</a></li>
+                        <li><a href="#" class="text-light-gold hover:text-gold transition">CGV</a></li>
+                        <li><a href="#" class="text-light-gold hover:text-gold transition">CGU</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="cormorant text-xl text-gold mb-4">Contact</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-gold mt-1 mr-3"></i>
+                            <span class="text-light-gold">contact@oradia.fr</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fab fa-instagram text-gold mt-1 mr-3"></i>
+                            <span class="text-light-gold">@oradia_oracle</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fab fa-facebook text-gold mt-1 mr-3"></i>
+                            <span class="text-light-gold">Oradia Oracle</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-gold/10 text-center">
+                <p class="text-light-gold text-sm">
+                    &copy; 2023 Oradia. Tous droits réservés. | 
+                    <button id="footerLogin" class="text-gold hover:text-light-gold">Accès Dashboard</button>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-night-blue/90 z-50 flex items-center justify-center hidden">
+        <div class="bg-dark-blue border border-gold/30 rounded-2xl p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-8">
+                <h3 class="cormorant text-3xl text-gold mb-2">Connexion Dashboard</h3>
+                <p class="text-light-gold">Accédez à votre espace d'analyse SEO</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="mb-6">
+                    <label class="block text-light-gold mb-2">Email</label>
+                    <input type="email" class="form-input w-full" placeholder="votre@email.com" required>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-light-gold mb-2">Mot de passe</label>
+                    <input type="password" class="form-input w-full" placeholder="Votre mot de passe" required>
+                </div>
+                
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="remember" class="mr-2">
+                        <label for="remember" class="text-light-gold text-sm">Se souvenir de moi</label>
+                    </div>
+                    <a href="#" class="text-gold text-sm hover:text-light-gold">Mot de passe oublié?</a>
+                </div>
+                
+                <button type="submit" class="btn-gold w-full">Se connecter</button>
+            </form>
+            
+            <button id="closeLogin" class="absolute top-4 right-4 text-gold text-2xl">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div id="dashboard" class="fixed inset-0 bg-night-blue z-50 overflow-auto hidden">
+        <div class="min-h-screen">
+            <!-- Dashboard Header -->
+            <header class="bg-night-blue border-b border-gold/20 py-4 px-6 flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10" />
+                    <span class="cormorant text-2xl font-bold ml-3 gold-gradient">ORADIA DASHBOARD</span>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button id="logoutBtn" class="btn-outline-gold">Déconnexion</button>
+                    <div class="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10" />
+                </div>
+            </header>
+            
+            <!-- Dashboard Content -->
+            <div class="dashboard-grid p-6">
+                <!-- Sidebar -->
+                <div class="sidebar p-4 rounded-2xl">
+                    <nav class="space-y-2">
+                        <a href="#" class="block py-3 px-4 text-gold bg-gold/10 rounded-lg">
+                            <i class="fas fa-chart-line mr-3"></i> Tableau de bord
+                        </a>
+                        <a href="#" class="block py-3 px-4 text-light-gold hover:bg-gold/10 hover:text-gold rounded-lg transition">
+                            <i class="fas fa-key mr-3"></i> Mots-clés
+                        </a>
+                        <a href="#" class="block py-3 px-4 text-light-gold hover:bg-gold/10 hover:text-gold rounded-lg transition">
+                            <i class="fas fa-users mr-3"></i> Visiteurs
+                        </a>
+                        <a href="#" class="block py-3 px-4 text-light-gold hover:bg-gold/10 hover:text-gold rounded-lg transition">
+                            <i class="fas fa-shopping-cart mr-3"></i> Conversions
+                        </a>
+                        <a href="#" class="block py-3 px-4 text-light-gold hover:bg-gold/10 hover:text-gold rounded-lg transition">
+                            <i class="fas fa-cog mr-3"></i> Paramètres
+                        </a>
+                    </nav>
+                </div>
+                
+                <!-- Main Content -->
+                <div class="p-4">
+                    <h2 class="cormorant text-3xl text-gold mb-6">Tableau de Bord Analytique</h2>
+                    
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div class="stat-card p-4">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h3 class="text-light-gold text-sm">Visiteurs</h3>
+                                    <p class="text-2xl font-bold text-gold">1,248</p>
+                                </div>
+                                <div class="text-2xl text-gold">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2 text-green-400 text-sm">
+                                <i class="fas fa-arrow-up"></i> 12.4% depuis hier
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card p-4">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h3 class="text-light-gold text-sm">Taux de rebond</h3>
+                                    <p class="text-2xl font-bold text-gold">32.6%</p>
+                                </div>
+                                <div class="text-2xl text-gold">
+                                    <i class="fas fa-signal"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2 text-red-400 text-sm">
+                                <i class="fas fa-arrow-down"></i> 2.1% depuis hier
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card p-4">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h3 class="text-light-gold text-sm">Conversions</h3>
+                                    <p class="text-2xl font-bold text-gold">48</p>
+                                </div>
+                                <div class="text-2xl text-gold">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2 text-green-400 text-sm">
+                                <i class="fas fa-arrow-up"></i> 8.2% depuis hier
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card p-4">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h3 class="text-light-gold text-sm">Revenus</h3>
+                                    <p class="text-2xl font-bold text-gold">€245</p>
+                                </div>
+                                <div class="text-2xl text-gold">
+                                    <i class="fas fa-euro-sign"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2 text-green-400 text-sm">
+                                <i class="fas fa-arrow-up"></i> 5.7% depuis hier
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Traffic Chart -->
+                    <div class="card-bg rounded-2xl p-6 mb-8">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="cormorant text-xl text-gold">Évolution du trafic (7 derniers jours)</h3>
+                            <div class="flex space-x-2">
+                                <button class="btn-outline-gold text-sm">Exporter CSV</button>
+                                <button class="btn-outline-gold text-sm">Exporter PDF</button>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <div class="absolute bottom-0 left-4 w-8 chart-bar" style="height: 40%"></div>
+                            <div class="absolute bottom-0 left-16 w-8 chart-bar" style="height: 60%"></div>
+                            <div class="absolute bottom-0 left-28 w-8 chart-bar" style="height: 80%"></div>
+                            <div class="absolute bottom-0 left-40 w-8 chart-bar" style="height: 70%"></div>
+                            <div class="absolute bottom-0 left-52 w-8 chart-bar" style="height: 90%"></div>
+                            <div class="absolute bottom-0 left-64 w-8 chart-bar" style="height: 75%"></div>
+                            <div class="absolute bottom-0 left-76 w-8 chart-bar" style="height: 95%"></div>
+                            
+                            <div class="absolute bottom-0 left-0 right-0 h-px bg-gold/20"></div>
+                            <div class="absolute bottom-0 left-0 top-0 w-px bg-gold/20"></div>
+                            
+                            <div class="absolute bottom-2 left-4 text-xs text-gold">Lun</div>
+                            <div class="absolute bottom-2 left-16 text-xs text-gold">Mar</div>
+                            <div class="absolute bottom-2 left-28 text-xs text-gold">Mer</div>
+                            <div class="absolute bottom-2 left-40 text-xs text-gold">Jeu</div>
+                            <div class="absolute bottom-2 left-52 text-xs text-gold">Ven</div>
+                            <div class="absolute bottom-2 left-64 text-xs text-gold">Sam</div>
+                            <div class="absolute bottom-2 left-76 text-xs text-gold">Dim</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Keywords Table -->
+                    <div class="card-bg rounded-2xl p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="cormorant text-xl text-gold">Analyse des mots-clés</h3>
+                            <div class="relative">
+                                <input type="text" placeholder="Rechercher..." class="form-input pl-10">
+                                <i class="fas fa-search absolute left-3 top-3 text-gold"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="border-b border-gold/20">
+                                        <th class="text-left py-3 text-gold">Mot-clé</th>
+                                        <th class="text-left py-3 text-gold">Volume</th>
+                                        <th class="text-left py-3 text-gold">Difficulté</th>
+                                        <th class="text-left py-3 text-gold">CPC</th>
+                                        <th class="text-left py-3 text-gold">Position</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-gold/10">
+                                        <td class="py-3 text-light-gold">oracle gratuit</td>
+                                        <td class="py-3 text-light-gold">1,200</td>
+                                        <td class="py-3 text-light-gold">Moyen</td>
+                                        <td class="py-3 text-light-gold">€0.45</td>
+                                        <td class="py-3 text-light-gold">8</td>
+                                    </tr>
+                                    <tr class="border-b border-gold/10">
+                                        <td class="py-3 text-light-gold">tirage carte</td>
+                                        <td class="py-3 text-light-gold">980</td>
+                                        <td class="py-3 text-light-gold">Élevé</td>
+                                        <td class="py-3 text-light-gold">€0.60</td>
+                                        <td class="py-3 text-light-gold">12</td>
+                                    </tr>
+                                    <tr class="border-b border-gold/10">
+                                        <td class="py-3 text-light-gold">human design</td>
+                                        <td class="py-3 text-light-gold">1,500</td>
+                                        <td class="py-3 text-light-gold">Faible</td>
+                                        <td class="py-3 text-light-gold">€0.35</td>
+                                        <td class="py-3 text-light-gold">5</td>
+                                    </tr>
+                                    <tr class="border-b border-gold/10">
+                                        <td class="py-3 text-light-gold">ennéagramme</td>
+                                        <td class="py-3 text-light-gold">850</td>
+                                        <td class="py-3 text-light-gold">Moyen</td>
+                                        <td class="py-3 text-light-gold">€0.50</td>
+                                        <td class="py-3 text-light-gold">9</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 text-light-gold">astrologie karmique</td>
+                                        <td class="py-3 text-light-gold">720</td>
+                                        <td class="py-3 text-light-gold">Élevé</td>
+                                        <td class="py-3 text-light-gold">€0.75</td>
+                                        <td class="py-3 text-light-gold">15</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="flex justify-between items-center mt-6">
+                            <div class="text-light-gold text-sm">Affichage 1-5 de 23 mots-clés</div>
+                            <div class="flex space-x-2">
+                                <button class="btn-outline-gold text-sm">Précédent</button>
+                                <button class="btn-outline-gold text-sm">Suivant</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Scroll to top functionality
+        const scrollTopBtn = document.getElementById('scrollTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('show');
+            } else {
+                scrollTopBtn.classList.remove('show');
+            }
+        });
+        
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Card flip functionality
+        document.querySelectorAll('.oracle-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('flipped');
+            });
+        });
+        
+        // Form submission
+        document.getElementById('oracleForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            document.getElementById('cardSelection').classList.remove('hidden');
+            window.scrollTo({
+                top: document.getElementById('cardSelection').offsetTop - 100,
+                behavior: 'smooth'
+            });
+            
+            // Simulate delay for card results
+            setTimeout(() => {
+                document.getElementById('resultsSection').classList.remove('hidden');
+                window.scrollTo({
+                    top: document.getElementById('resultsSection').offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            }, 3000);
+        });
+        
+        // Login modal functionality
+        const loginBtn = document.getElementById('loginBtn');
+        const footerLogin = document.getElementById('footerLogin');
+        const loginModal = document.getElementById('loginModal');
+        const closeLogin = document.getElementById('closeLogin');
+        const loginForm = document.getElementById('loginForm');
+        const dashboard = document.getElementById('dashboard');
+        const logoutBtn = document.getElementById('logoutBtn');
+        
+        loginBtn.addEventListener('click', () => {
+            loginModal.classList.remove('hidden');
+        });
+        
+        footerLogin.addEventListener('click', () => {
+            loginModal.classList.remove('hidden');
+        });
+        
+        closeLogin.addEventListener('click', () => {
+            loginModal.classList.add('hidden');
+        });
+        
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = loginForm.querySelector('input[type="email"]').value;
+            const password = loginForm.querySelector('input[type="password"]').value;
+            
+            if (email === 'boucheron.r89@gmail.com' && password === 'RafalE12#12') {
+                loginModal.classList.add('hidden');
+                dashboard.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+            } else {
+                alert('Identifiants incorrects. Veuillez réessayer.');
+            }
+        });
+        
+        logoutBtn.addEventListener('click', () => {
+            dashboard.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedElements = document.querySelectorAll('.fade-in');
+            animatedElements.forEach(el => {
+                el.style.opacity = '0';
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                }, 100);
+            });
+        });
+    </script>
+<p style="border-radius: 8px; text-align: center; font-size: 12px; color: #fff; margin-top: 16px;position: fixed; left: 8px; bottom: 8px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 8px;">Made with <img src="https://enzostvs-deepsite.hf.space/logo.svg" alt="DeepSite Logo" style="width: 16px; height: 16px; vertical-align: middle;display:inline-block;margin-right:3px;filter:brightness(0) invert(1);"><a href="https://enzostvs-deepsite.hf.space" style="color: #fff;text-decoration: underline;" target="_blank" >DeepSite</a> - 🧬 <a href="https://enzostvs-deepsite.hf.space?remix=Paddy22/site-oradia" style="color: #fff;text-decoration: underline;" target="_blank" >Remix</a></p></body>
+</html>
